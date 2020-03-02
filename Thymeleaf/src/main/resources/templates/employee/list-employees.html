@@ -1,0 +1,68 @@
+<!DOCTYPE>
+<html lang="en" 
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+
+<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" >
+<title>Table of Employees</title>
+
+
+</head>
+
+<body>		
+
+
+
+<div class="container">
+<h2>Employee Directory</h2>
+<hr>
+
+<a th:href="@{/employee/showFormForAdd}" class="btn btn-primary btn-sm mb-3">Add Employee</a>
+
+	<table class="table table-bordered table-striped">
+		<thead class= "thead-dark">
+			<tr>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Email</th>
+			<th>Action</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="tmp : ${employees}">
+				<td th:text="${tmp.firstName}"></td>
+				<td th:text="${tmp.lastName}"></td>
+				<td th:text="${tmp.email}"></td>
+				<td>
+				
+				<div sec:authorize="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+				<a th:href="@{/employee/showFormForUpdate(employeeId=${tmp.id})}"
+				class="btn btn-success btn-sm">Update</a>
+				</div>
+				
+				<div sec:authorize="hasRole('ROLE_ADMIN')">  
+				<a th:href="@{/employee/delete(employeeId=${tmp.id})}"
+				class="btn btn-danger btn-sm" 
+				onclick="if(!(confirm('are you sure you want to delete this employee'))) return false">
+				Delete</a>
+				</div>
+				
+				</td>
+				
+				
+				
+			</tr>
+		</tbody>
+	</table>
+	</div>
+</body>
+
+</html>
